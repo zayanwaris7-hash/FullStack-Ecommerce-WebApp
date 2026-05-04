@@ -1,0 +1,24 @@
+# Dependency folders
+node_modules/
+FRONTEND/node_modules/
+BACKEND/node_modules/
+
+# Build outputs
+dist/
+BACKEND/dist/
+FRONTEND/dist/
+FRONTEND/build/
+FRONTEND/.next/
+
+# Environment variables and secrets
+.env
+BACKEND/.env
+FRONTEND/.env
+.env.local
+
+# Debug logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
