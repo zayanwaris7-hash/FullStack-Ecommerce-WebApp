@@ -1,33 +1,20 @@
 {
   "compilerOptions": {
-    /* Base Options */
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022"],
+    
+    "rootDir": "./", 
     "outDir": "./dist",
-    "rootDir": "./src",
     
-    /* Strictness - Required for Zod & Drizzle */
+    "types": ["node"],
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
     "skipLibCheck": true,
-    
-    /* Interop & Formatting */
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "declaration": true,
-
-    /* Path Aliases */
     "paths": {
-      "@/*": ["/src/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
-} 
+  "include": ["src/**/*", "drizzle.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}
