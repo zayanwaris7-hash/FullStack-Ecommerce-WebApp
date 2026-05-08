@@ -1,121 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { Show, SignInButton, SignUpButton, UserButton ,SignOutButton} from '@clerk/react'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <header className="flex items-center justify-between px-8 py-4 bg-white border-b border-slate-200 shadow-sm">
+      {/* Logo/Brand Area */}
+      <div className="text-xl font-bold text-indigo-600">
+        MyBrand
+      </div>
 
-      <div className="ticks"></div>
+      <nav className="flex items-center gap-4">
+        <Show when="signed-out">
+          {/* Sign In Button */}
+          <SignInButton mode="modal">
+            <button className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-indigo-600 transition-colors">
+              Log In
+            </button>
+          </SignInButton>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/* Sign Up Button (The CTA) */}
+          <SignUpButton mode="modal">
+            <button className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all shadow-md active:scale-95">
+              Get Started
+            </button>
+          </SignUpButton>
+        </Show>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <Show when="signed-in">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-slate-500">Welcome back!</span>
+            <UserButton 
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "w-10 h-10 border-2 border-indigo-100"
+                }
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-6">
+            {/* The Sign Out Button */}
+            <SignOutButton>
+              <button className="text-sm font-medium text-red-500 hover:text-red-700 transition-colors">
+                Sign Out
+              </button>
+            </SignOutButton>
+          </div>
+        </Show>
+      </nav>
+    </header>
   )
 }
 

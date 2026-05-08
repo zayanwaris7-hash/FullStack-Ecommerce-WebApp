@@ -1,5 +1,12 @@
+// defing all the schema od my database using drizzle orm(instead of using raw sql its better),
+
+
+
+
 import { relations } from 'drizzle-orm';
 import { pgTable, serial, integer,text, timestamp, boolean, varchar, uuid, jsonb } from 'drizzle-orm/pg-core';
+
+//some data types 
 
 export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
 export type UserRole = "support" | "admin" | "customer";
@@ -8,11 +15,14 @@ export type checkoutSessionLine={
     quantity:number;
     price:number;
 }
+
 // Example: Users Table
 export const users = pgTable('users', {
-  id: uuid('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
+  userClerkId: text('user_clerk_id').notNull().unique(),
   name: text('name').notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
+  //role is from the type define above 
   role: text('role').$type<UserRole>().notNull().default("customer"),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 });
@@ -37,6 +47,8 @@ export const checkoutSessions = pgTable('checkout_sessions', {
     userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     polerCheckoutId:text('poler_checkout_id').notNull(),
     totalprice: integer('total_price').notNull(),
+
+    //one user has multiple check out session each session having multiple products
     lines:jsonb('lines').$type<checkoutSessionLine[]>().notNull(), // Array of { productId, quantity, price }
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 });

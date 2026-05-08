@@ -41,12 +41,14 @@ CREATE TABLE "products" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY  DEFAULT gen_random_uuid() NOT NULL,
+	"user_clerk_id" text NOT NULL ,
 	"name" text NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"role" text DEFAULT 'customer' NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	CONSTRAINT "users_email_unique" UNIQUE("email"),
+	CONSTRAINT "user_clerk_id_unique" UNIQUE("user_clerk_id")
 );
 --> statement-breakpoint
 ALTER TABLE "checkout_sessions" ADD CONSTRAINT "checkout_sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

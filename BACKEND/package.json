@@ -26,9 +26,11 @@
     "pg": "^8.13.1",
     "standardwebhooks": "^1.0.0",
     "stream-chat": "^8.57.6",
+    "svix": "^1.93.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^22.10.10",
     "@types/pg": "^8.11.10",
