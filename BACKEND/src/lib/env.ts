@@ -14,12 +14,12 @@ const envSchema=z.object({
 
     CLERK_PUBLISHABLE_KEY:z.string().min(1),
     CLERK_SECRET_KEY:z.string().min(1),
-    CLERK_WEBHOOK_SECRET:z.string().optional(),
+    CLERK_WEBHOOK_SECRET:z.string(),
 
 
     FRONTEND_URL:z.string().min(1),
 
-    POLER_ACCESS_TOKEN:z.string().optional(),
+    POLER_ACCESS_TOKEN:z.string(),
     POLER_WEBHOOK_SECRET:z.string(),
     POLER_API_BASE_URL:z.string().url().default("https://api.polar.sh"),
     POLER_CHECKOUT_ID:z.string().uuid(),
@@ -33,7 +33,7 @@ const envSchema=z.object({
      
     SENTRY_DSN:z.string().url().optional(),
 })
-
+ 
 
 export type Env = z.infer<typeof envSchema>;
 

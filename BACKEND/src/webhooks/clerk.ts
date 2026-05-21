@@ -1,9 +1,9 @@
 //impoert from schema file
-import { db } from '@/database/index.js';
-
-import { users } from '@/database/schema.js';
-import { getEnv } from '@/lib/env.js';
-import { parseRole } from '@/lib/roles.js';
+import { db } from '../database/index.js';
+//one lame debug (use env.POLER_WEBHOOK_SECRET instead of env.CLERK_WEBHOOK_SECRET)
+import { users } from '../database/schema.js';
+import { getEnv } from '../lib/env.js';
+import { parseRole } from '../lib/roles.js';
 import { UserJSON } from '@clerk/backend';
 import { eq } from 'drizzle-orm';
 import express from 'express';
@@ -29,7 +29,7 @@ export const clerkWebHookHandler = async (req: express.Request, res: express.Res
             return res.status(400).json({ error: "Missing svix headers" });
         }
 
-        const wh = new Webhook(env.POLER_WEBHOOK_SECRET);
+        const wh = new Webhook(env.CLERK_WEBHOOK_SECRET);
         let evt: any;
         try {
             evt = wh.verify(payload, {

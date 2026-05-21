@@ -4,23 +4,30 @@ import 'dotenv/config';
 import { clerkMiddleware } from '@clerk/express';
 import { clerkWebHookHandler } from './webhooks/clerk.js';
 import { getEnv } from './lib/env.js';
- import fs from "node:fs";
+import fs from "node:fs";
 import path from "node:path";
+import meRoute from './routers/meRouter.js'
+import productRoute from './routers/productRouter.js'
+import streamRoute from './routers/streamRouter.js'
 
 const env = getEnv();
 const app = express();
 const rawJson = express.raw({ type: "application/json", limit: "1mb" });
 
 app.post("/Clerk/Webhook", rawJson, (req, res) => {
-    void clerkWebHookHandler(req, res);
+   clerkWebHookHandler(req, res);
 })
 
 app.use(cors());
 app.use(express.json());
 app.use(clerkMiddleware());
 
+app.use('/api/me',meRoute);
+app.use('/api/product',productRoute);
+app.use('/api/stream',streamRoute);
 
-const publicDir = path.join(process.cwd(), "public");
+
+const publicDir = path.join(process.cwd(),"..", "FRONTEND", "dist");
 if (fs.existsSync(publicDir)) {
   app.use(express.static(publicDir));
 
