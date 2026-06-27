@@ -1,4 +1,4 @@
-import type { UserRole } from "@/database/schema.js";
+import type { UserRole } from "../database/schema.js";
 const VALID:readonly UserRole[]=["customer","admin","support"];
 export function parseRole(value:unknown){
     if(typeof value === "string" && (VALID as readonly string[]).includes(value)){

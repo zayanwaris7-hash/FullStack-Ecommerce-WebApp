@@ -1,13 +1,14 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq} from "drizzle-orm";
 import { db } from "../database/index.js";
 import { products } from "../database/schema.js";
 import { Request,Response ,NextFunction} from "express";
 
 export async function listProduct(req:Request , res:Response , next:NextFunction){
     try {
-        const catogory=(typeof req.query.catogory) === "string"? req.query.catogory.trim() : "";
+        const catogory=(typeof req.query.category) === "string"? (req.query.category) : "";
+        const catogorystr=String(catogory||"");
         const activeOnly= eq(products.active,true);
-        const WhereCluase=catogory? and(activeOnly,eq(products.category,catogory)):activeOnly;
+        const WhereCluase=catogory != ""? and(activeOnly,eq(products.category,catogorystr)):activeOnly;
         const row=await db.select().from(products).where(WhereCluase).orderBy(desc(products.createdAt));
          res.json({product:row});
     } catch (e) {

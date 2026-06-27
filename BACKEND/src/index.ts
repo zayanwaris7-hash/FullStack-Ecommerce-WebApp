@@ -9,6 +9,7 @@ import path from "node:path";
 import meRoute from './routers/meRouter.js'
 import productRoute from './routers/productRouter.js'
 import streamRoute from './routers/streamRouter.js'
+import checkOutRoute from './routers/checkOutRouter.js'
 
 const env = getEnv();
 const app = express();
@@ -17,6 +18,9 @@ const rawJson = express.raw({ type: "application/json", limit: "1mb" });
 app.post("/Clerk/Webhook", rawJson, (req, res) => {
    clerkWebHookHandler(req, res);
 })
+//app.post("/Polar/Webhook", rawJson, (req, res) => {
+//   PolerWebHookHandler(req, res);
+//})
 
 app.use(cors());
 app.use(express.json());
@@ -25,6 +29,7 @@ app.use(clerkMiddleware());
 app.use('/api/me',meRoute);
 app.use('/api/product',productRoute);
 app.use('/api/stream',streamRoute);
+app.use('/api/checkOut',checkOutRoute);
 
 
 const publicDir = path.join(process.cwd(),"..", "FRONTEND", "dist");

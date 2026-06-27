@@ -45,9 +45,10 @@ export const products= pgTable('products', {
 export const checkoutSessions = pgTable('checkout_sessions', {
     id: uuid('id').defaultRandom().primaryKey(),
     userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-    polerCheckoutId:text('poler_checkout_id').notNull(),
+    polerCheckoutId:text('poler_checkout_id'),
     totalprice: integer('total_price').notNull(),
-
+    currency:text('currency').default("pkr"),
+    status:text('status').default("pending"),
     //one user has multiple check out session each session having multiple products
     lines:jsonb('lines').$type<checkoutSessionLine[]>().notNull(), // Array of { productId, quantity, price }
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
