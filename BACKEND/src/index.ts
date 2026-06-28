@@ -6,10 +6,11 @@ import { clerkWebHookHandler } from './webhooks/clerk.js';
 import { getEnv } from './lib/env.js';
 import fs from "node:fs";
 import path from "node:path";
-import meRoute from './routers/meRouter.js'
-import productRoute from './routers/productRouter.js'
-import streamRoute from './routers/streamRouter.js'
-import checkOutRoute from './routers/checkOutRouter.js'
+import meRoute from './routers/meRouter.js';
+import productRoute from './routers/productRouter.js';
+import streamRoute from './routers/streamRouter.js';
+import checkOutRoute from './routers/checkOutRouter.js';
+import { PolerWebHookHandler } from './webhooks/polar.js';
 
 const env = getEnv();
 const app = express();
@@ -18,9 +19,9 @@ const rawJson = express.raw({ type: "application/json", limit: "1mb" });
 app.post("/Clerk/Webhook", rawJson, (req, res) => {
    clerkWebHookHandler(req, res);
 })
-//app.post("/Polar/Webhook", rawJson, (req, res) => {
-//   PolerWebHookHandler(req, res);
-//})
+app.post("/Polar/Webhook", rawJson, (req, res) => {
+   PolerWebHookHandler(req, res);
+})
 
 app.use(cors());
 app.use(express.json());

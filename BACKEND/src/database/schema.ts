@@ -58,7 +58,7 @@ export const orders = pgTable('orders', {
     id: uuid('id').defaultRandom().primaryKey(),
     userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     status: text('status').$type<OrderStatus>().notNull().default("pending"),
-    polerCheckoutId:text('poler_checkout_id').notNull(),
+    polerCheckoutId:text('poler_checkout_id'),
     polerOrderId:text('poler_order_id').notNull(),
     totalprice: integer('total_price').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
