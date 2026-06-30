@@ -11,6 +11,7 @@ import productRoute from './routers/productRouter.js';
 import streamRoute from './routers/streamRouter.js';
 import checkOutRoute from './routers/checkOutRouter.js';
 import { PolerWebHookHandler } from './webhooks/polar.js';
+import {ClerkSentryMiddleWare} from './middleware/SentryClerkUser.js'
 import * as Sentry from "@sentry/node";
 
 const env = getEnv();
@@ -27,6 +28,8 @@ app.post("/Polar/Webhook", rawJson, (req, res) => {
 app.use(cors());
 app.use(express.json());
 app.use(clerkMiddleware());
+app.use(ClerkSentryMiddleWare);
+
 
 app.use('/api/me',meRoute);
 app.use('/api/product',productRoute);
