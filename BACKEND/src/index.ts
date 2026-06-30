@@ -11,6 +11,7 @@ import productRoute from './routers/productRouter.js';
 import streamRoute from './routers/streamRouter.js';
 import checkOutRoute from './routers/checkOutRouter.js';
 import { PolerWebHookHandler } from './webhooks/polar.js';
+import * as Sentry from "@sentry/node";
 
 const env = getEnv();
 const app = express();
@@ -52,6 +53,15 @@ if (fs.existsSync(publicDir)) {
   });
 }
 
+Sentry.setupExpressErrorHandler(app);
+app.use((error:unknown,req:express.Request,res:express.Response,next:express.NextFunction)=>{
+  const sentryId=(res as express.Response & {sentry?:string}).sentry;
+  res.status(500).json({
+    error:"Internal Server Error",
+    ...(sentryId!==undefined && {sentryId}),
+  });
+
+});
 
 app.listen(env.PORT, () => {
     console.log(`Server is running on port ${env.PORT}`);

@@ -95,8 +95,8 @@ export async function PolerWebHookHandler(req: express.Request, res: express.Res
             }
 
 
-            await fullfillCheckOutSession(sessionId, orderId, all);
-
+            const cond =await fullfillCheckOutSession(sessionId, orderId, all);
+            if(!cond) console.error("checkoutSession And order not created but paid! Db error.");
             res.status(200).json({ ok: true });
         }
     } catch (e) {
