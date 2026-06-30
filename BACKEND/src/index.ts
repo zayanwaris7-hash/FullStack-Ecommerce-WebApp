@@ -8,6 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 import meRoute from './routers/meRouter.js';
 import productRoute from './routers/productRouter.js';
+import AdminRoute from './routers/AdminRouter.js';
 import streamRoute from './routers/streamRouter.js';
 import checkOutRoute from './routers/checkOutRouter.js';
 import { PolerWebHookHandler } from './webhooks/polar.js';
@@ -35,6 +36,7 @@ app.use('/api/me',meRoute);
 app.use('/api/product',productRoute);
 app.use('/api/stream',streamRoute);
 app.use('/api/checkOut',checkOutRoute);
+app.use('/api/adminRoute',AdminRoute);
 
 
 const publicDir = path.join(process.cwd(),"..", "FRONTEND", "dist");

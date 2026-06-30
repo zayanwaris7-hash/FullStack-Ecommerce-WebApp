@@ -34,8 +34,8 @@ export const products= pgTable('products', {
   category: text('category').notNull(),
   description: text('description').notNull().default(""),
   price: integer('price').notNull(),
-  imageurl: text('image_url').notNull().default(""),
-  imageKitFileId: text('image_kit_file_id').notNull().default(""),
+  imageurl: text('image_url').default(""),
+  imageKitFileId: text('image_kit_file_id').default(""),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),    
   active: boolean('active').default(true).notNull(),
 
