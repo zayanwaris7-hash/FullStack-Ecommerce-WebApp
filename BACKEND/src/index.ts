@@ -11,6 +11,7 @@ import productRoute from './routers/productRouter.js';
 import AdminRoute from './routers/AdminRouter.js';
 import streamRoute from './routers/streamRouter.js';
 import checkOutRoute from './routers/checkOutRouter.js';
+import OrderRoute from './routers/OrderRouter.js';
 import { PolerWebHookHandler } from './webhooks/polar.js';
 import {ClerkSentryMiddleWare} from './middleware/SentryClerkUser.js'
 import * as Sentry from "@sentry/node";
@@ -37,6 +38,7 @@ app.use('/api/product',productRoute);
 app.use('/api/stream',streamRoute);
 app.use('/api/checkOut',checkOutRoute);
 app.use('/api/adminRoute',AdminRoute);
+app.use('/api/orderRoute',OrderRoute);
 
 
 const publicDir = path.join(process.cwd(),"..", "FRONTEND", "dist");
