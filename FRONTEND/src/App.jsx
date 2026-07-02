@@ -1,11 +1,15 @@
 import { Show, SignInButton, SignUpButton, UserButton ,SignOutButton} from '@clerk/react'
+import Loading from './Pages/loadingPage.jsx';
+import { useAuth } from '@clerk/react';
 
 function App() {
+      const {isLoaded}=useAuth();
+      if(!isLoaded) return <Loading/>;
   return (
     <header className="flex items-center justify-between px-8 py-4 bg-white border-b border-slate-200 shadow-sm">
       {/* Logo/Brand Area */}
       <div className="text-xl font-bold text-indigo-600">
-        MyBrand
+        FYNSHITS
       </div>
 
       <nav className="flex items-center gap-4">
