@@ -1,18 +1,30 @@
 import { useAuth } from '@clerk/react'
 import {useQuery} from "@tanstack/react-query";
-import React from 'react'
-import { apiFetch } from '../Lib/api';
+import React, { useState } from 'react'
 import {Link} from "react-router";
+import {
+  LogInIcon,
+  PackageIcon,
+  SettingsIcon,
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  StoreIcon,
+} from "lucide-react";
+import { Show, SignInButton, SignUpButton, UserButton ,SignOutButton} from '@clerk/react'
+import {useCartStore} from "../Store/coundCart.js";
+
 function Navbar() {
-  const {getToken,isSignedIn}=useAuth();
+
+  /*const {getToken,isSignedIn}=useAuth();
    const {data,error,isLoading}=useQuery({
     queryKey:["me"],
     queryFn:()=>apiFetch("/api/me",{getToken}),
     enabled:isSignedIn
-   });
-   
-
-
+   });*/
+   // This grabs only the current items array
+const  cartCount = useCartStore((state) => state.items.length);
+   const [role,setRole]=useState("coustomer");
+    
   return ( 
   <header className="sticky top-0 z-50 border-b border-base-300 bg-base-100/95 shadow-sm backdrop-blur-md">
       <div className="navbar mx-auto min-h-14 max-w-7xl px-4 py-2.5 md:px-6 md:py-3">
@@ -21,6 +33,7 @@ function Navbar() {
             to="/"
             className="btn btn-ghost gap-2 px-2 font-mono text-lg font-semibold uppercase tracking-wide md:text-xl"
           >
+            {console.log("he")}
             <span className="flex size-10 items-center justify-center rounded-lg bg-primary/15 p-1 text-primary">
               <StoreIcon className="size-8" aria-hidden />
             </span>
