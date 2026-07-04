@@ -37,7 +37,7 @@ const  cartCount = useCartStore((state) => state.items.length);
             <span className="flex size-10 items-center justify-center rounded-lg bg-primary/15 p-1 text-primary">
               <StoreIcon className="size-8" aria-hidden />
             </span>
-            <span className="leading-none">FYNSHIT</span>
+            <span className="leading-none">FYNSHITs</span>
           </Link>
         </div>
 

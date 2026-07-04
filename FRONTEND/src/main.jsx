@@ -10,12 +10,7 @@ import { SentryErrorFallback } from "./fallbackError/fallbackfunction.jsx";
 import SyntryScynUserthings from "./fallbackError/SyntryScynUserthings.jsx"
 import { BrowserRouter ,createBrowserRouter,RouterProvider} from "react-router";
 
-const route = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />, // Your App component is safely inside the router now
-  },
-]);
+
 const queryClient = new QueryClient();
 const clerkClient = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 createRoot(document.getElementById('root'), {
@@ -28,10 +23,12 @@ createRoot(document.getElementById('root'), {
   <StrictMode>
     <ClerkProvider publishableKey={clerkClient}>
       <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
         <Sentry.ErrorBoundary fallback={<SentryErrorFallback />}>
           <SyntryScynUserthings />
-          <RouterProvider router={route}/>
+          <App/>
         </Sentry.ErrorBoundary>
+        </BrowserRouter>
       </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>
