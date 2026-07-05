@@ -12,7 +12,7 @@ router.get('/',async (req ,res,next )=>{
          return;
         }
         const id=await getLocalUser(userId);
-        res.json({id});   
+        res.json(id);   
     } catch (e) {
         next(e);
     }

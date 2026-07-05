@@ -3,8 +3,8 @@ import { useAuth } from '@clerk/react';
 import Layout from "./Components/Layout.jsx"
 import Home from './Pages/Home.jsx';
 import { Route,Routes,Navigate } from 'react-router';
-import Cart from './Pages/Cart.jsx';
-import Orders from './Pages/Orders.jsx';
+import OrdersPage from './Pages/OrdersPage.jsx';
+import CartPage from './Pages/CartPage.jsx';
 
 function App() {
       const {isLoaded}=useAuth();
@@ -12,9 +12,9 @@ function App() {
   return (
      <Layout>
        <Routes>
-         <Route path='/' element={<Home/>}/>
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/orders" element={<Orders />} />
+         <Route path="/" element={<Home/>}/>
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/orders" element={<OrdersPage />} />
        </Routes>
      </Layout>
   )
