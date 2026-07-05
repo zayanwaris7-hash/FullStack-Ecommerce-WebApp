@@ -107,7 +107,7 @@ export async function getOrder(req: Request, res: Response, next: NextFunction) 
       .select({
         id: orderItems.id,
         quantity: orderItems.quantity,
-        unitPriceCents: orderItems.price,
+        unitPrice: orderItems.price,
         product: products,
       })
       .from(orderItems)

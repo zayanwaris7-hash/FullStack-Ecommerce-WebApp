@@ -31,7 +31,7 @@ export async function productCatogory(req:Request , res:Response , next:NextFunc
 }
 export async function productBySlug(req:Request , res:Response , next:NextFunction){
     try {
-        const row=await db.select().from(products).where(and(eq(products.slug , req.params.slug as string),eq(products.active,true)));
+        const [row]=await db.select().from(products).where(and(eq(products.slug , req.params.slug as string),eq(products.active,true)));
         if(!row) res.json({error:"Not Found "});
          res.json({product:row});
     } catch (e) {

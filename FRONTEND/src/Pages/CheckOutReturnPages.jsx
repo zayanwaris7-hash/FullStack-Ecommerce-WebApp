@@ -14,7 +14,7 @@ function CheckoutReturnPage() {
 
   useEffect(() => {
     clearCart();
-    queryClient.invalidateQueries({ queryKey: ["orders"] });
+    queryClient.invalidateQueries({ queryKey: ["Orders"] });
   }, [queryClient, clearCart]);
 
   return (
