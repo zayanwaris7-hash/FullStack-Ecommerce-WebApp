@@ -35,7 +35,12 @@ async function createStreamToken(req:Request,res:Response,next:NextFunction){
             console.error("not server upsert line 34 (/control/streamcontollor.ts)");
         }
         const token=server.createToken(sid);
-        res.json({token,apikey:env.STREAM_API_KEY,userId:sid});
+        res.json({
+            token,
+            apikey:env.STREAM_API_KEY,
+            userId:sid,
+            name:displayName
+        });
 
     } catch (e) {
 
