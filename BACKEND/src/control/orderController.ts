@@ -11,7 +11,7 @@ const env=getEnv();
 export async function listOrders(req: Request, res: Response, next: NextFunction) {
     try {
 
-        const { userId, isAuthenticated } = getAuth(req.body);
+        const { userId, isAuthenticated } = getAuth(req);
         if (!userId || !isAuthenticated) {
             res.status(404).json({ error: "Unautherized Acess" });
             return;
@@ -22,9 +22,9 @@ export async function listOrders(req: Request, res: Response, next: NextFunction
             res.status(503).json({ error: "Account not synced yet" });
             return;
         }
-        const rows = (isStaff(user.role) ?
-            await db.select().from(orders).orderBy(desc(orders.createdAt)) :
-            await db.select().from(orders).where(eq(orders.userId, user.id)));
+        const rows = isStaff(user.role) ?
+            (await db.select().from(orders).orderBy(desc(orders.createdAt))) :
+            (await db.select().from(orders).where(eq(orders.userId, user.id)));
 
         const ids = rows.map((r) => r.id);
         const previewByOrder = new Map();

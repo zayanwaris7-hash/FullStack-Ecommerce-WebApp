@@ -8,7 +8,7 @@ import './index.css'
 import App from './App.jsx'
 import { SentryErrorFallback } from "./fallbackError/fallbackfunction.jsx";
 import SyntryScynUserthings from "./fallbackError/SyntryScynUserthings.jsx"
-import { BrowserRouter ,createBrowserRouter,RouterProvider} from "react-router";
+import { BrowserRouter} from "react-router-dom";
 
 
 const queryClient = new QueryClient();

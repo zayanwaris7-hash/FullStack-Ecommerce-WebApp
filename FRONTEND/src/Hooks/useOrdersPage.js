@@ -1,7 +1,7 @@
 //isLoading, error, orders, staff
 import { useAuth } from "@clerk/react";
 import { useQuery } from "@tanstack/react-query";
-import { apiFetch } from "../Lib/api";
+import { apiFetch } from "../Lib/api.js";
 function useOrdersPage() {
 
    const {getToken ,isSignedIn}=useAuth();

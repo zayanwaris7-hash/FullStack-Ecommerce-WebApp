@@ -10,7 +10,7 @@ import EmptyCart from "../Components/EmptyCart.jsx";
 import { CartSkeleton } from "../Components/Skeletons.jsx";
 import { PageError } from "../Components/PageError.jsx";
 import { IK_PRESETS, imageKitOptimizedUrl } from "../Lib/imagekit.js";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { formatPrice } from "../utilitis/formatcurrency.js";
 import { Show, SignInButton } from "@clerk/react";
 import { useCartHook } from "../Hooks/useCartHook";

@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router-dom";
 import { useCartStore } from "../Store/coundCart.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";

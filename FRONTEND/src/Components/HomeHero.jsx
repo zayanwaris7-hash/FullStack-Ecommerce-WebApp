@@ -1,6 +1,6 @@
 import React from 'react';
 import {ArrowRightIcon,SparklesIcon} from "lucide-react";
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 function HomeHero({categories,isLoading}){
   return (
       <section className="relative overflow-hidden rounded-box border border-base-300 bg-linear-to-br from-base-100 via-base-100 to-primary/10 shadow-lg">

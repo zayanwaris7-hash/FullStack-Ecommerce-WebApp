@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/react'
 import {useQuery} from "@tanstack/react-query";
 import React, { useState } from 'react'
-import {Link} from "react-router";
+import {Link} from "react-router-dom";
 import {apiFetch} from "../Lib/api.js"; 
 import {
   LogInIcon,
@@ -19,15 +19,12 @@ function Navbar() {
 const  cartCount = useCartStore((state) => state.items.length);
 const { getToken, isSignedIn } = useAuth();
 
-  const { data: meData } = useQuery({
+  const { data: meData,isError:error} = useQuery({
     queryKey: ["me"],
     queryFn: () => apiFetch("/api/me", { getToken }),
     enabled: isSignedIn,
   });
-
-  const role = meData?.role;
-
-    
+  const role=meData?.role;
   return ( 
   <header className="sticky top-0 z-50 border-b border-base-300 bg-base-100/95 shadow-sm backdrop-blur-md">
       <div className="navbar mx-auto min-h-14 max-w-7xl px-4 py-2.5 md:px-6 md:py-3">
@@ -37,6 +34,7 @@ const { getToken, isSignedIn } = useAuth();
             className="btn btn-ghost gap-2 px-2 font-mono text-lg font-semibold uppercase tracking-wide md:text-xl"
           >
             {console.log("he")}
+            {console.log(role,"blah")}
             <span className="flex size-10 items-center justify-center rounded-lg bg-primary/15 p-1 text-primary">
               <StoreIcon className="size-8" aria-hidden />
             </span>
@@ -55,7 +53,6 @@ const { getToken, isSignedIn } = useAuth();
               <PackageIcon className="size-6 opacity-90" aria-hidden />
               <span className="hidden sm:inline">Orders</span>
             </Link>
-
             {role === "admin" ? (
               <Link to="/admin" className="btn btn-ghost gap-2 font-medium text-secondary">
                 <SettingsIcon className="size-6" aria-hidden />
@@ -92,6 +89,7 @@ const { getToken, isSignedIn } = useAuth();
               <UserButton
                 appearance={{ elements: { avatarBox: "h-10 w-10 ring-2 ring-base-300" } }}
               />
+                  {console.log(role)}
               {role === "support" || role === "admin" ? (
                 <span className="badge badge-primary badge-sm hidden capitalize md:inline-flex">
                   {role}

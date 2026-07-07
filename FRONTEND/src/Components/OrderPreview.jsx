@@ -31,7 +31,7 @@ export function OrderPreview({ items, size = "md" }) {
       >
         {p.imageUrl ? (
           <img
-            src={imageKitOptimizedUrl(p.imageUrl, ikPreset)}
+            src={imageKitOptimizedUrl(p.imageurl, ikPreset)}
             alt=""
             className="h-full w-full object-cover"
             loading="lazy"

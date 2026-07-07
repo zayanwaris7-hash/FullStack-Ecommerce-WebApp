@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { uploadImageToImageKit } from "../lib/imagekitUpload.js";
-import { IK_PRESETS, imageKitOptimizedUrl } from "../lib/imagekitUrl.js";
+import { uploadImageToImageKit } from "../Lib/imageKitUploadFile.js";
+import { IK_PRESETS, imageKitOptimizedUrl } from "../Lib/imagekit.js";
 
 export function AdminProductForm({ initial, saving, error, getToken, onCancel, onSubmit }) {
   const [slug, setSlug] = useState(initial?.slug ?? "");

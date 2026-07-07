@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import useOrderVideoPage from "../Hooks/useOrderVedio.js";
 import { OrderVideoSkeleton } from "../Components/Skeletons.jsx";
 import { PageError } from "../Components/PageError.jsx";

@@ -4,6 +4,7 @@ import { IK_PRESETS, imageKitOptimizedUrl } from "../Lib/imagekit.js";
 import { PackageIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { formatPrice } from "../utilitis/formatcurrency.js";
 import { AdminProductForm } from "../Components/AdminProductForm.jsx";
+import {Navigate} from "react-router-dom";
 
 function AdminProductsPage() {
   const {
@@ -19,7 +20,7 @@ function AdminProductsPage() {
     deleteMutation,
   } = useAdminProductsPage();
 
-  if (meData && meData.user?.role !== "admin") {
+  if (meData && meData?.role !== "admin") {
     return <Navigate to="/" replace />;
   }
 

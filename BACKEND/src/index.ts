@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction ,Request,Response} from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { clerkMiddleware } from '@clerk/express';
@@ -61,15 +61,15 @@ if (fs.existsSync(publicDir)) {
 }
 
 Sentry.setupExpressErrorHandler(app);
-app.use((error:unknown,req:express.Request,res:express.Response,next:express.NextFunction)=>{
+app.use((e:unknown,req:express.Request,res:express.Response,next:express.NextFunction)=>{
   const sentryId=(res as express.Response & {sentry?:string}).sentry;
   res.status(500).json({
     error:"Internal Server Error",
+    err: e,
     ...(sentryId!==undefined && {sentryId}),
   });
 
 });
-
 app.listen(env.PORT, () => {
     console.log(`Server is running on port ${env.PORT}`);
 });

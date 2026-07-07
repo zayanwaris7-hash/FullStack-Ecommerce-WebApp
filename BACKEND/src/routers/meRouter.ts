@@ -14,7 +14,9 @@ router.get('/',async (req ,res,next )=>{
         const id=await getLocalUser(userId);
         res.json(id);   
     } catch (e) {
+        console.log(e);
         next(e);
+       
     }
 });
 

@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/react";
 
 const raw = import.meta.env.VITE_API_URL;
-const base = typeof raw === "string" ? raw.replace(/\/+$/, "") : ""; // remove trailing slashes
+const base = raw; // remove trailing slashes
 
 // this is an authenticated fetch req that we use to send reqs to our api
 export async function apiFetch(path, opts = {}) {
@@ -22,6 +22,7 @@ export async function apiFetch(path, opts = {}) {
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
+    console.log("api fetching");
   } catch (e) {
     Sentry.addBreadcrumb({
       category: "api",
