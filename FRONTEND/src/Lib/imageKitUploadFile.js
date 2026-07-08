@@ -4,7 +4,7 @@ const UPLOAD_URL = "https://upload.imagekit.io/api/v1/files/upload";
 
 export async function uploadImageToImageKit(file, getToken, opts = {}) {
   const { folder = "products", fileName } = opts;
-  const auth = await apiFetch("/api/admin/imagekit/auth", { getToken });
+  const auth = await apiFetch("/api/adminRoute/imagekit/auth", { getToken });
 
   // replace unsafe characters with _.
   // example: "my photo @ home.png" becomes "my_photo___home.png"

@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "../Lib/api";
 
@@ -10,7 +10,7 @@ export const useHomeCatalog = () => {
         const next = new URLSearchParams(searchParams);
         if (!category) next.delete("category");
         else next.set("category", category);
-        setSearchParams(next, { replace: true });
+        setParams(next, { replace: true });
     }
     
    const {data:catogor,isLoading:isCatoLoad,error}= useQuery({
@@ -21,7 +21,7 @@ export const useHomeCatalog = () => {
 
     const {data:productData,isLoading:isProductLoad}=useQuery({
         queryKey:["productByCategory"],
-        queryFn:()=>{apiFetch(category?`/api/product?category=${encodeURIComponent(category)}`:`/api/product`)}
+        queryFn:()=>apiFetch(category? `/api/product?category=${encodeURIComponent(category)}`:`/api/product`)
     });
 
     const catogories=catogor?.catog??[];

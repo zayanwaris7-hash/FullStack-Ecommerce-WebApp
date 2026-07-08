@@ -8,6 +8,7 @@ import { asc, desc, eq, inArray, } from "drizzle-orm";
 import { getEnv } from "../lib/env.js";
 import {getStreamChatServer,streamuserid,StreamChatDisplayName} from "../lib/stream.js"
 const env=getEnv();
+import type {UserRole} from "../database/schema.js"
 export async function listOrders(req: Request, res: Response, next: NextFunction) {
     try {
 
@@ -22,9 +23,14 @@ export async function listOrders(req: Request, res: Response, next: NextFunction
             res.status(503).json({ error: "Account not synced yet" });
             return;
         }
-        const rows = isStaff(user.role) ?
+        const rows = isStaff(user.role as UserRole) ?
             (await db.select().from(orders).orderBy(desc(orders.createdAt))) :
             (await db.select().from(orders).where(eq(orders.userId, user.id)));
+        
+        if (!rows) {
+            res.status(503).json({ error: "Orders Undefined" });
+            return;
+        }
 
         const ids = rows.map((r) => r.id);
         const previewByOrder = new Map();

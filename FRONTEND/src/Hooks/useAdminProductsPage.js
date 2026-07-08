@@ -15,7 +15,7 @@ export function useAdminProductsPage() {
     enabled: isSignedIn,
   });
 
-  const isAdmin = meData?.user?.role === "admin";
+  const isAdmin = meData?.role === "admin";
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "products"],
@@ -25,15 +25,15 @@ export function useAdminProductsPage() {
 
   // this mutation will either update or create a product
   const saveMutation = useMutation({
-    mutationFn: async ({ body, id }) => {
-      if (id) {
-        return apiFetch(`/api/adminRoute/product/${id}`, {
+    mutationFn: async ({ body, slug }) => {
+      if (slug) {
+        return apiFetch(`/api/adminRoute/product/${slug}`, {
           getToken,
-          method: "PATCH",
+          method: "POST",
           body,
         });
       }
-      return apiFetch("/api/admin/products", { getToken, method: "POST", body });
+      return apiFetch("/api/adminRoute/product", { getToken, method: "POST", body });
     },
 
     onSuccess: () => {

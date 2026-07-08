@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { apiFetch } from "../Lib/api";
 
 //product is load error

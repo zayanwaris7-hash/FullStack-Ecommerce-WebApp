@@ -1,13 +1,20 @@
 import React from 'react';
 import { useHomeCatalog } from '../Hooks/useHomeCatalog.js';
-import { useSearchParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import  HomeHero  from "../Components/HomeHero.jsx";
 import { TrustStrip } from '../Components/TrustStrip.jsx';
 import { PageError } from '../Components/PageError.jsx';
 import { ProductCart } from '../Components/ProductCart.jsx';
 const Home = () => {
   const all=useHomeCatalog();
-
+ /*  category,
+        setCategory,
+        catogories,
+        products,
+        isCatoLoad,
+        isProductLoad,
+        categoryChipsLoading,
+        error,*/
 
 
   return (
@@ -43,7 +50,7 @@ const Home = () => {
                   <button
                     key={c}
                     type="button"
-                    className={`btn btn-sm ${categoryFilter === c ? "btn-primary" : "btn-ghost border border-base-300"}`}
+                    className={`btn btn-sm ${all.category === c ? "btn-primary" : "btn-ghost border border-base-300"}`}
                     onClick={() => all.setCategory(c)}
                   >
                     {c}

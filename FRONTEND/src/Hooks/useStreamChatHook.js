@@ -2,7 +2,7 @@
 
 import { useAuth } from "@clerk/react";
 import { useQuery } from "@tanstack/react-query";
-import { useOutletContext } from "react-router";
+import { useOutletContext } from "react-router-dom";
 import { apiFetch } from "../Lib/api";
 
 

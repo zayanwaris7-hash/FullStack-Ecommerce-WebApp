@@ -69,7 +69,7 @@ export async function checkAdmin(req: Request, res: Response, next: NextFunction
         const localUserr = getLocalUser(userId);
 
         if (!isAdmin((await localUserr).role)) {
-            res.status(403).json({ error: "Only Admin Acess this!" });
+            res.status(403).json({ error: "Only Admin Access this!" });
         }
 
         next();
