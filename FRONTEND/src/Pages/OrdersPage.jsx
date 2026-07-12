@@ -75,13 +75,13 @@ function OrdersPage() {
                         </span>
 
                         <span
-                          className={`badge badge-sm capitalize ${
-                            o.status === "paid"
+                          className={ `badge badge-sm capitalize ${
+                            o.status === "pending"
                               ? "badge-success"
-                              : o.status === "pending"
+                              : o.status === "processing"
                                 ? "badge-warning"
                                 : "badge-error"
-                          }`}
+                          }` }
                         >
                           {o.status}
                         </span>

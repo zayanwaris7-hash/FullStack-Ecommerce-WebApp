@@ -10,8 +10,9 @@ function useOrdersPage() {
     queryFn:()=>apiFetch("/api/orderRoute",{getToken}),
     enabled:isSignedIn
    });
+   console.log(orderError);
    const {data:User,isLoading:UserLoading,error:UserError}=useQuery({
-    queryKey:["User"],
+    queryKey:["me"],
     queryFn:()=>apiFetch("/api/me",{getToken}),
     enabled:isSignedIn
    });

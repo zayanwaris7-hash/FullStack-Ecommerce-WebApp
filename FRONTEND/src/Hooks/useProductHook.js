@@ -1,23 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { useAuth } from "@clerk/react";
 import { apiFetch } from "../Lib/api";
 
-//product is load error
 function useProductHook() {
+    const { getToken } = useAuth();
+    const { slug } = useParams();
 
-    const {getToken}=useAuth();
-    const {slug} =useParams();
-    const {data,isLoading,error}=useQuery({
-        queryKey:["Product"],
-        queryFn:()=>apiFetch(`/api/product/${slug}`,{getToken})
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["product", slug],
+        enabled: !!slug,
+        queryFn: () =>
+            apiFetch(`/api/product/${slug}`, { getToken }),
     });
-    const product=data?.product??{};
-    return  {
-        product,
+
+    return {
+        product: data?.product,
         isLoading,
-        error
+        error,
     };
-  
 }
 
-export default useProductHook
+export default useProductHook;

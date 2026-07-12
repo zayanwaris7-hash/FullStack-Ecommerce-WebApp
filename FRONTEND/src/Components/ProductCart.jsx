@@ -4,8 +4,8 @@ import { PlusIcon } from "lucide-react";
 import { formatPrice } from "../utilitis/formatcurrency.js";
 import { IK_PRESETS, imageKitOptimizedUrl } from "../Lib/imagekit.js";
 import { useCartStore } from "../Store/coundCart.js";
-export const ProductCart = (product) => {
-     const addItem=useCartStore((state)=>state.items.addItem);
+export const ProductCart = ({product}) => {
+     const addItem=useCartStore((state)=>state.addItem);
   return (
     <article className="card group h-full overflow-hidden border border-base-300 bg-base-100 shadow-md transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xl">
       <Link to={`/product/${product.slug}`} className="relative block overflow-hidden">
@@ -13,7 +13,7 @@ export const ProductCart = (product) => {
           {product.imageurl ? (
             <img
               src={imageKitOptimizedUrl(product.imageurl, IK_PRESETS.catalogCard)}
-              alt=""
+              alt={product.name}
               className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
               loading="lazy"
               decoding="async"

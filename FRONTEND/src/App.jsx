@@ -11,6 +11,7 @@ import OrderSummaryPage from './Pages/OrderSummaryPage.jsx';
 import AdminProductsPage from './Pages/adminPage.jsx';
 import OrderVideoPage from './Pages/VedioPage.jsx';
 import OrderChatPage from './Pages/OrderChatPage.jsx';
+import ProductBySlug from './Pages/ProductBySlug.jsx';
 
 function App() {
       const {isLoaded,isSignedIn}=useAuth();
@@ -20,6 +21,8 @@ function App() {
        <Routes>
          <Route path="/" element={<Home/>}/>
         <Route path="/cart" element={<CartPage />} />
+      
+        <Route path="/product/:slug" element={<ProductBySlug />} />
         <Route path="/orders" element={isSignedIn?<OrdersPage />: <Navigate to={"/"} replace/>} />
         <Route path="/checkout/return" element={<CheckoutReturnPage />} />
           <Route

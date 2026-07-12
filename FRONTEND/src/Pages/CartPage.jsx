@@ -16,24 +16,25 @@ import { Show, SignInButton } from "@clerk/react";
 import { useCartHook } from "../Hooks/useCartHook";
 
 function CartPage() {
-    /* items,
-        setQuantity,
-        removeItem,
-        ProductLoading,
-        ProductError,
-        getcheckOutLink,
-        isCheckOutLink,
-        subTotal */
+  /* items,
+      setQuantity,
+      removeItem,
+      ProductLoading,
+      ProductError,
+      getcheckOutLink,
+      isCheckOutLink,
+      subTotal */
   const {
-    checkout:getcheckOutLink,
-    checkoutLoading:isCheckOutLink,
+    getcheckOutLink: checkout,
+    isCheckOutLink: checkoutLoading,
     items,
     lines,
-    productsError:ProductError,
-    productsLoading:ProductLoading,
+    ProductError: productsError,
+    ProductLoading: productsLoading,
     removeItem,
-    setQty:setQuantity,
-    subtotal:subTotal,
+    inc,
+    decr,
+    subTotal: subtotal,
   } = useCartHook();
 
   return (
@@ -52,9 +53,9 @@ function CartPage() {
       ) : (
         <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
           <ul className="space-y-4">
-            {lines.map(({ line, product: p }) => (
+            {lines.map(({ item, product: p }) => (
               <li
-                key={line.productId}
+                key={item.productId}
                 className="card card-side border border-base-300 bg-base-100 shadow-sm"
               >
                 <figure className="p-4">
@@ -92,22 +93,22 @@ function CartPage() {
                         <button
                           type="button"
                           className="btn btn-sm join-item gap-0 px-2.5"
-                          onClick={() => setQty(line.productId, line.quantity - 1)}
-                          aria-label={line.quantity <= 1 ? "Remove from cart" : "Decrease quantity"}
+                          onClick={() => decr(item.productId)}
+                          aria-label={item.quantity <= 1 ? "Remove from cart" : "Decrease quantity"}
                         >
                           <MinusIcon className="size-4" aria-hidden />
                         </button>
                         <span
-                          className="join-item flex min-w-10 items-center justify-center bg-base-200 px-3 text-sm font-medium tabular-nums text-base-content"
+                          className="join-item btn btn-sm btn-disabled min-w-12 cursor-default"
                           aria-live="polite"
                         >
-                          {line.quantity}
+                          {item.quantity}
                         </span>
                         <button
                           type="button"
                           className="btn btn-sm join-item gap-0 px-2.5"
-                          onClick={() => setQty(line.productId, Math.min(99, line.quantity + 1))}
-                          disabled={line.quantity >= 99}
+                          onClick={() => inc(item.productId)}
+                          disabled={item.quantity >= 99}
                           aria-label="Increase quantity"
                         >
                           <PlusIcon className="size-4" aria-hidden />
@@ -115,7 +116,7 @@ function CartPage() {
                       </div>
                       <button
                         type="button"
-                        onClick={() => removeItem(line.productId)}
+                        onClick={() => removeItem(item.productId)}
                         className="btn btn-ghost btn-square btn-sm text-error hover:bg-error/10"
                         aria-label="Remove from cart"
                         title="Remove from cart"
@@ -125,7 +126,7 @@ function CartPage() {
                     </div>
                   </div>
                   <div className="text-right font-semibold text-base-content">
-                    {p ? formatPrice(p.price * line.quantity) : "-"}
+                    {p ? formatPrice(p.price * item.quantity) : "-"}
                   </div>
                 </div>
               </li>

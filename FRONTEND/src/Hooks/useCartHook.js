@@ -8,7 +8,8 @@ import { useState } from "react";
 export const useCartHook = () => {
     const { getToken } = useAuth();
     const items = useCartStore((s) => s.items);
-    const setQuantity = useCartStore((s) => s.addItem);
+    const inc = useCartStore((s) => s.increaseQuantity);
+    const decr = useCartStore((s) => s.reduceQuantity);
     const removeItem = useCartStore((s) => s.removeItem);
     const [isCheckOutLink,setcheckOutLink]=useState(false);
 
@@ -18,41 +19,49 @@ export const useCartHook = () => {
         enabled: items.length > 0
     });
 
-    const product = data?.product ?? [];
+    const product = data?.product?? [];
+    console.log(product);
     const byIdMap = new Map(product.map((p)=>[p.id,p]));
+    console.log(byIdMap);
     const lines= items.map((item)=>({
         item,
         product:byIdMap.get(item.productId)??null,
     }));
-
+    console.log(lines);
    const subTotal= lines.reduce((sum ,{item,product})=>{
         if(!product) return sum;
         return sum+(product.price * item.quantity);
     },0);
+    console.log(subTotal)
+ async function getcheckOutLink() {
+    setcheckOutLink(true);
 
-    async function getcheckOutLink(){
-        setcheckOutLink(true);
-        const body={
-            items:items.map((i)=>({productId:i.productId,quantity:i.quantity}))
-        }
-        const {data,isLoading,isError}=useQuery({
-            queryKey:["CheckOutLink"],
-            queryFn:()=>apiFetch("api/checkOut",{
-                getToken,
-                method:"POST",
-                body
-            })
+    try {
+        const data = await apiFetch("/api/checkOut", {
+            getToken,
+            method: "POST",
+            body: {
+                items: items.map((i) => ({
+                    productId: i.productId,
+                    quantity: i.quantity,
+                })),
+            },
         });
+        console.log("data : ",data)
+
         if (data?.checkOutUrl) {
-          window.location.href = data.checkOutUrl;
-          return;
+            window.location.href = data.checkOutUrl;
+            return;
         }
+    } finally {
         setcheckOutLink(false);
     }
+}
 
     return {
         items,
-        setQuantity,
+        inc,
+        decr,
         removeItem,
         ProductLoading,
         ProductError,

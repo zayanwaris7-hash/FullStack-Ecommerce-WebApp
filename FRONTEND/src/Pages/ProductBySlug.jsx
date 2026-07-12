@@ -3,21 +3,34 @@ import useProductHook from '../Hooks/useProductHook.js'
 import { IK_PRESETS,imageKitOptimizedUrl, imageKitWatermarkedUrl } from "../Lib/imagekit.js";
 import { formatPrice } from "../utilitis/formatcurrency.js"
 import { useCartStore } from '../Store/coundCart';
+import { Link } from 'react-router-dom';
 import { PageError } from '../Components/PageError';
 import { ProductPageSkeleton } from '../Components/Skeletons';
+import {
+    ExternalLinkIcon,
+    CheckIcon,
+    ShoppingCartIcon,
+    ArrowLeftIcon,
+} from "lucide-react";
+const HIGHLIGHTS = [
+  "Secure checkout",
+  "Support from your order after payment",
+  "Specs listed for this catalog",
+];
 
 
 function ProductBySlug() {
     const { product, isLoading, error } = useProductHook();
+    const p = product;
+    const addItems = useCartStore((s) => s.addItem);
+    const watermarkedFullUrl = product?.imageurl ? imageKitWatermarkedUrl(p.imageurl) : null;
+    const category = p?.category ?? "General";
+   
     if (isLoading) return <ProductPageSkeleton />;
 
     if (error || !product) {
         return <PageError message="Product not found." action={{ to: "/", label: "Back to shop" }} />;
     }
-    const addItems = useCartStore((s) => s.addItem);
-    const watermarkedFullUrl = product?.imageurl ? imageKitWatermarkedUrl(product.imageurl) : null;
-    const category = product?.category ?? "General";
-    const p = product;
 
     return (
         <div>
@@ -36,7 +49,7 @@ function ProductBySlug() {
             <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
                 <div className="card overflow-hidden border border-base-300 bg-base-100 shadow-lg">
                     <figure className="aspect-square bg-base-300">
-                        {p.imageUrl ? (
+                        {p.imageurl ? (
                             <img
                                 src={imageKitOptimizedUrl(p.imageurl, IK_PRESETS.productHero)}
                                 alt=""
@@ -75,7 +88,7 @@ function ProductBySlug() {
                     </h1>
 
                     <p className="mt-3 text-3xl font-bold tabular-nums text-primary md:text-4xl">
-                        {formatPrice(p.price)}
+                        {formatPrice(p.price,"pkr")}
                     </p>
 
                     <p className="mt-6 text-base leading-relaxed text-base-content/85">{p.description}</p>
@@ -92,7 +105,7 @@ function ProductBySlug() {
                     <div className="mt-8 flex flex-wrap gap-3">
                         <button
                             type="button"
-                            onClick={() => addItem(p.id,1)}
+                            onClick={() => addItems(p.id,1)}
                             className="btn btn-primary btn-lg gap-2 shadow-lg"
                         >
                             <ShoppingCartIcon className="size-5" aria-hidden />

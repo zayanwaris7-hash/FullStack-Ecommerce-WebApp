@@ -26,6 +26,7 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
         }
 
         const parsed = cartSchema.safeParse(req.body);
+        console.log(parsed);
         if (!parsed.success) {
             res.send(404).json({ error: "Invalid Cart", description: parsed.error });
             return;
@@ -35,13 +36,15 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
             res.send(503).json({ error: "Checkouts not configured" });
             return;
         }
+
         const localUser = await getLocalUser(userId);
+        console.log(localUser);
         if (!localUser) {
             res.send(404).json({ error: "Not Signed In !" });
             return;
         }
         const ids = parsed.data.items.map(product => product.productId);
-
+        console.log(ids);
         const productRows = await db.select().from(products).where(and(inArray(products.id, ids), eq(products.active, true)));
         if (productRows.length !== ids.length) {
             res.status(400).json({ error: "One or more product is inavalid " });
@@ -74,7 +77,7 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
         }).returning();
 
         const returnUrl=`${env.FRONTEND_URL}/cart`;
-        const successUrl=`${env.FRONTEND_URL}/checkout/return?checkoout_id={CHECKOUT_ID}`;
+        const successUrl=`${env.FRONTEND_URL}/checkout/return?checkout_id={CHECKOUT_ID}`;
         const checkout=await polarCreateCheckOut(env,{
             products:[env.POLER_CHECKOUT_ID],
             prices:{
@@ -89,7 +92,9 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
             metadata:{checkout_session_id:session.id}
         });
         await db.update(checkoutSessions).set({polerCheckoutId:checkout.id}).where(eq(checkoutSessions.id,session.id));
+        console.log(checkout.url);
         res.json({checkOutUrl:checkout.url})
+
     } catch (e) {
         next(e);
     }

@@ -7,6 +7,7 @@ import { PageError } from '../Components/PageError.jsx';
 import { ProductCart } from '../Components/ProductCart.jsx';
 const Home = () => {
   const all=useHomeCatalog();
+  
  /*  category,
         setCategory,
         catogories,
@@ -20,7 +21,7 @@ const Home = () => {
   return (
     <>
         <div className="space-y-12">
-      <HomeHero categories={all.catogories} isLoading={all.isCatoLoad} />
+      <HomeHero categories={all.categories} isLoading={all.isCatoLoad} />
 
       <TrustStrip />
 
@@ -46,7 +47,7 @@ const Home = () => {
               ? [1, 2, 3, 4].map((i) => (
                   <div key={i} className="skeleton h-8 w-20 rounded-lg" aria-hidden />
                 ))
-              : all.catogories.map((c) => (
+              : all.categories.map((c) => (
                   <button
                     key={c}
                     type="button"

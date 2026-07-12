@@ -11,9 +11,7 @@ if (process.env.DATABASE_URL === undefined) {
 // Create the connection pool
 export const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: true, 
-  },
+  
 });
 
 // Initialize Drizzle with the pool and your schema

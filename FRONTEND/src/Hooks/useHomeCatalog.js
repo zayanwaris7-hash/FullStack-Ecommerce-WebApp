@@ -1,42 +1,48 @@
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "../Lib/api";
 
 export const useHomeCatalog = () => {
-   const [searchParams, setParams] = useSearchParams();
-    const category = searchParams.get("catogory")?.trim() ?? "";
-
-    const setCategory = (category) => {
-        const next = new URLSearchParams(searchParams);
-        if (!category) next.delete("category");
-        else next.set("category", category);
-        setParams(next, { replace: true });
-    }
+    const [searchParams, setParams] = useSearchParams();
     
-   const {data:catogor,isLoading:isCatoLoad,error}= useQuery({
-        queryKey:["categories"],
-        queryFn:()=>apiFetch("/api/product/catogory"),
+    // Fixed typo: matching "category" consistently
+    const category = searchParams.get("category")?.trim() ?? ""; 
+    
+
+    // 1. Fetch Categories (Pulled out of useEffect)
+    const { data: categoryData, isLoading: isCatoLoad, error } = useQuery({
+        queryKey: ["categories"],
+        queryFn: () => apiFetch("/api/product/catogory"),
     });
 
-
-    const {data:productData,isLoading:isProductLoad}=useQuery({
-        queryKey:["productByCategory"],
-        queryFn:()=>apiFetch(category? `/api/product?category=${encodeURIComponent(category)}`:`/api/product`)
+    // 2. Fetch Products based on selected category (Pulled out of useEffect)
+    const { data: productData, isLoading: isProductLoad } = useQuery({
+        queryKey: ["productByCategory", category], // Keeps track of changing categories
+        queryFn: () => apiFetch(category ? `/api/product?category=${encodeURIComponent(category)}` : `/api/product`)
     });
 
-    const catogories=catogor?.catog??[];
+   
+
+    // Update URL query parameters
+    const setCategory = (catName) => {
+        const next = new URLSearchParams(searchParams);
+        if (!catName) next.delete("category");
+        else next.set("category", catName);
+        setParams(next, { replace: true });
+    };
+
+    const categories=categoryData?.catog??[];
     const products=productData?.product??[];
-    const categoryChipsLoading = isCatoLoad && catogories.length === 0;
-
-
+    const categoryChipsLoading = isCatoLoad && categories.length === 0;
     return {
         category,
         setCategory,
-        catogories,
+        categories, 
         products,
         isCatoLoad,
         isProductLoad,
         categoryChipsLoading,
         error,
     };
-}
+};

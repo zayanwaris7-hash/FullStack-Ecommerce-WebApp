@@ -15,6 +15,7 @@ function AdminProductsPage() {
     editing,
     setEditing,
     products,
+    categories,
     isLoading,
     saveMutation,
     deleteMutation,
@@ -75,9 +76,9 @@ function AdminProductsPage() {
                 <tr key={p.id}>
                   <td className="align-middle">
                     <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-base-300 bg-base-200 shadow-sm ring-1 ring-base-300/50 sm:h-18 sm:w-18">
-                      {p.imageUrl ? (
+                      {p.imageurl ? (
                         <img
-                          src={imageKitOptimizedUrl(p.imageUrl, IK_PRESETS.adminThumb)}
+                          src={imageKitOptimizedUrl(p.imageurl, IK_PRESETS.adminThumb)}
                           alt=""
                           className="h-full w-full object-cover"
                           loading="lazy"
@@ -95,7 +96,7 @@ function AdminProductsPage() {
                     <span className="badge badge-ghost badge-sm">{p.category ?? "-"}</span>
                   </td>
                   <td className="font-mono text-sm opacity-80">{p.slug}</td>
-                  <td>{formatPrice(p.priceCents, p.currency)}</td>
+                  <td>{formatPrice(p.price)}</td>
                   <td>
                     {p.active ? (
                       <span className="badge badge-success badge-sm">yes</span>

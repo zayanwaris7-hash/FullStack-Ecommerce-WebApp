@@ -6,76 +6,76 @@ import { NextFunction, Request, Response } from "express";
 import { checkoutSessions, orderItems, orders, products, users } from "../database/schema.js";
 import { asc, desc, eq, inArray, } from "drizzle-orm";
 import { getEnv } from "../lib/env.js";
-import {getStreamChatServer,streamuserid,StreamChatDisplayName} from "../lib/stream.js"
-const env=getEnv();
-import type {UserRole} from "../database/schema.js"
+import { getStreamChatServer, streamuserid, StreamChatDisplayName } from "../lib/stream.js"
+const env = getEnv();
+import type { UserRole } from "../database/schema.js"
 export async function listOrders(req: Request, res: Response, next: NextFunction) {
-    try {
+  try {
 
-        const { userId, isAuthenticated } = getAuth(req);
-        if (!userId || !isAuthenticated) {
-            res.status(404).json({ error: "Unautherized Acess" });
-            return;
-        }
-
-        const user = await getLocalUser(userId);
-        if (!user) {
-            res.status(503).json({ error: "Account not synced yet" });
-            return;
-        }
-        const rows = isStaff(user.role as UserRole) ?
-            (await db.select().from(orders).orderBy(desc(orders.createdAt))) :
-            (await db.select().from(orders).where(eq(orders.userId, user.id)));
-        
-        if (!rows) {
-            res.status(503).json({ error: "Orders Undefined" });
-            return;
-        }
-
-        const ids = rows.map((r) => r.id);
-        const previewByOrder = new Map();
-
-
-        if (ids.length > 0) {
-            const allTheStuff = await
-                db.select(
-                    {
-                        orderId: orderItems.orderId,
-                        quantity: orderItems.quantity,
-                        name: products.name,
-                        slug: products.slug,
-                        imageurl: products.imageurl,
-                    }
-                ).from(orderItems)
-                    .innerJoin(products, eq(orderItems.productId, products.id))
-                    .where(inArray(orderItems.orderId, ids))
-                    .orderBy(asc(orders.id));
-
-            for (const row of allTheStuff) {
-                const list = previewByOrder.get(row.orderId) ?? [];
-                list.push({
-                    name: row.name,
-                    slug: row.slug,
-                    imageUrl: row.imageurl,
-                    quantity: row.quantity,
-                });
-                previewByOrder.set(row.orderId, list);
-            }
-            const ordersPayload = rows.map((o) => ({
-                ...o,
-                previewItems: previewByOrder.get(o.id) ?? [],
-            }));
-
-            
-            res.json({ orders: ordersPayload });
-        }else{
-            res.status(200).send("Not Order Yet" );
-            return;
-        }
-
-    } catch (e) {
-        next(e);
+    const { userId, isAuthenticated } = getAuth(req);
+    if (!userId || !isAuthenticated) {
+      res.status(404).json({ error: "Unautherized Acess" });
+      return;
     }
+
+    const user = await getLocalUser(userId);
+    if (!user) {
+      res.status(503).json({ error: "Account not synced yet" });
+      return;
+    }
+    const rows = isStaff(user.role as UserRole) ?
+      (await db.select().from(orders).orderBy(desc(orders.createdAt))) :
+      (await db.select().from(orders).where(eq(orders.userId, user.id)));
+    if (rows.length === 0) {
+        res.status(200).json({
+        orders: [],
+       });
+}
+    const ids = rows.map((r) => r.id);
+    const previewByOrder = new Map();
+
+
+    if (ids.length > 0) {
+      const allTheStuff = await
+        db.select(
+          {
+            orderId: orderItems.orderId,
+            quantity: orderItems.quantity,
+            name: products.name,
+            slug: products.slug,
+            imageurl: products.imageurl,
+          }
+        ).from(orderItems)
+          .innerJoin(products, eq(orderItems.productId, products.id))
+          .where(inArray(orderItems.orderId, ids))
+          .orderBy(asc(orderItems.id));
+
+      for (const row of allTheStuff) {
+        const list = previewByOrder.get(row.orderId) ?? [];
+        list.push({
+          name: row.name,
+          slug: row.slug,
+          imageUrl: row.imageurl,
+          quantity: row.quantity,
+        });
+        previewByOrder.set(row.orderId, list);
+      }
+      const ordersPayload = rows.map((o) => ({
+        ...o,
+        previewItems: previewByOrder.get(o.id) ?? [],
+      }));
+
+
+      res.json({ orders: ordersPayload });
+    } else {
+      res.json({
+        orders: [],
+      });
+    }
+
+  } catch (e) {
+    next(e);
+  }
 }
 
 export async function getOrder(req: Request, res: Response, next: NextFunction) {
@@ -160,8 +160,8 @@ export async function createStreamChannel(req: Request, res: Response, next: Nex
       return;
     }
 
-    const ordersasid=order.polerOrderId;
-    const [ordersas]=await db.select({status:checkoutSessions.status}).from(checkoutSessions).where(eq(checkoutSessions.polerCheckoutId,ordersasid));
+    const ordersasid = order.polerOrderId;
+    const [ordersas] = await db.select({ status: checkoutSessions.status }).from(checkoutSessions).where(eq(checkoutSessions.polerCheckoutId, ordersasid));
     if (ordersas.status !== "paid") {
       res.status(403).json({ error: "Order must be paid to open support chat" });
       return;
@@ -216,8 +216,8 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
       .from(orders)
       .where(eq(orders.id, req.params.id as string))
       .limit(1);
-    const ordersasid=order.polerOrderId;
-    const [ordersas]=await db.select({status:checkoutSessions.status}).from(checkoutSessions).where(eq(checkoutSessions.polerCheckoutId,ordersasid));
+    const ordersasid = order.polerOrderId;
+    const [ordersas] = await db.select({ status: checkoutSessions.status }).from(checkoutSessions).where(eq(checkoutSessions.polerCheckoutId, ordersasid));
     if (!ordersas || ordersas.status !== "paid") {
       res.status(404).json({ error: "Order not found or not paid" });
       return;

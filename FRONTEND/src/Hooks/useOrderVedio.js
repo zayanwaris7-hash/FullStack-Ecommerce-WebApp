@@ -18,7 +18,7 @@ function useOrderVideoPage() {
     isLoading,
     error: loadError,
   } = useQuery({
-    queryKey: ["order", id],
+    queryKey: ["orderById", id],
     queryFn: () => apiFetch(`/api/orders/${id}`, { getToken }),
     enabled: Boolean(id) && isSignedIn,
   });

@@ -1,7 +1,9 @@
-export function formatPrice(amount, currency) {
+export function formatPrice(amount, currency = "PKR") {
+  if (amount == null) return "";
+
   return new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: (currency ?? "pkr").toUpperCase(),
+    currency: currency.toUpperCase(),
   }).format(amount);
 }
 

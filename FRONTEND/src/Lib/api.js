@@ -38,7 +38,7 @@ export async function apiFetch(path, opts = {}) {
 
     throw e;
   }
-
+  console.log(res);
   const data = await res.json();
 
   Sentry.addBreadcrumb({

@@ -1,6 +1,6 @@
 import { useAuth } from "@clerk/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiFetch } from "../Lib/api.js";
 
 export function useAdminProductsPage() {
@@ -8,6 +8,8 @@ export function useAdminProductsPage() {
   const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
+
+  
 
   const { data: meData } = useQuery({
     queryKey: ["me"],
@@ -17,13 +19,23 @@ export function useAdminProductsPage() {
 
   const isAdmin = meData?.role === "admin";
 
+  // 1. Fetch Products
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "products"],
     queryFn: () => apiFetch("/api/adminRoute/product", { getToken }),
     enabled: isSignedIn && isAdmin,
   });
 
-  // this mutation will either update or create a product
+  // 2. Fetch Categories (Ensuring admin page can access them for forms/filters)
+  const { data: categoryData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => apiFetch("/api/product/catogory"),
+    enabled: isSignedIn && isAdmin,
+  });
+  const products = data?.product ?? [];
+ const categories = categoryData?.catog ?? [];
+
+  // Save Mutation (Create/Update)
   const saveMutation = useMutation({
     mutationFn: async ({ body, slug }) => {
       if (slug) {
@@ -39,22 +51,23 @@ export function useAdminProductsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      queryClient.invalidateQueries({ queryKey: ["product-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       setModalOpen(false);
       setEditing(null);
     },
   });
 
+  // Delete Mutation
   const deleteMutation = useMutation({
     mutationFn: (productId) =>
       apiFetch(`/api/adminRoute/product/${productId}`, { getToken, method: "DELETE" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      queryClient.invalidateQueries({ queryKey: ["product-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
     onError: (err) => {
-      console.log(err);
+      console.error(err);
       window.alert(err instanceof Error ? err.message : "Delete failed");
     },
   });
@@ -67,7 +80,8 @@ export function useAdminProductsPage() {
     setModalOpen,
     editing,
     setEditing,
-    products: data?.products ?? [],
+    products, // Now reading directly from the integrated Zustand state
+    categories, // Available for rendering dropdown selection options in your modals
     isLoading,
     saveMutation,
     deleteMutation,
