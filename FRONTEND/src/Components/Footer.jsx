@@ -12,8 +12,7 @@ export default function Footer() {
               FYNSHITS
             </div>
             <p className="mt-3 text-sm leading-relaxed text-base-content/65">
-              Curated hardware and workspace tools. Paid orders include priority support; chat with
-              our team and join a video call when we share a link.
+              Discover curated fashion, everyday essentials, and timeless styles. Enjoy secure shopping, fast delivery, and dedicated customer support with every order.
             </p>
           </div>
 

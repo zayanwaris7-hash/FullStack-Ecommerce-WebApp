@@ -1,9 +1,9 @@
 import React from 'react';
-import {ArrowRightIcon,SparklesIcon} from "lucide-react";
+import { ArrowRightIcon, SparklesIcon } from "lucide-react";
 import { Link } from 'react-router-dom';
-function HomeHero({categories,isLoading}){
+function HomeHero({ categories, isLoading }) {
   return (
-      <section className="relative overflow-hidden rounded-box border border-base-300 bg-linear-to-br from-base-100 via-base-100 to-primary/10 shadow-lg">
+    <section className="relative overflow-hidden rounded-box border border-base-300 bg-linear-to-br from-base-100 via-base-100 to-primary/10 shadow-lg">
       <div
         className="absolute right-0 top-0 h-64 w-64 translate-x-1/4 -translate-y-1/4 rounded-full bg-primary/10 blur-3xl"
         aria-hidden
@@ -12,12 +12,11 @@ function HomeHero({categories,isLoading}){
       <div className="relative grid gap-8 p-8 md:grid-cols-2 md:items-center md:p-12 lg:p-14">
         <div className="text-left">
           <h1 className="text-3xl font-bold tracking-tight text-base-content md:text-4xl lg:text-5xl">
-            Hardware &amp; workspace, <span className="text-primary">ready to ship</span>
+            Elevate your style with <span className="text-primary">premium fashion</span>
           </h1>
 
           <p className="mt-4 max-w-lg text-base leading-relaxed text-base-content/70">
-            Audio, wearables, workspace, and travel—curated for work and home. Secure checkout;
-            after payment, use your order page for support chat and video.
+            Explore our curated collection of trendy apparel, footwear, and accessories designed for comfort and style. Enjoy secure checkout, fast shipping, and dedicated customer support.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
