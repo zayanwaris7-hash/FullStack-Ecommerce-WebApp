@@ -64,8 +64,7 @@ Sentry.setupExpressErrorHandler(app);
 app.use((e:unknown,req:express.Request,res:express.Response,next:express.NextFunction)=>{
   const sentryId=(res as express.Response & {sentry?:string}).sentry;
   res.status(500).json({
-    error:"Internal Server Error",
-    err: e,
+    error:e,
     ...(sentryId!==undefined && {sentryId}),
   });
 

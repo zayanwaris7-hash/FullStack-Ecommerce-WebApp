@@ -40,7 +40,7 @@ export const ProductCart = ({product}) => {
           </span>
           <button
             type="button"
-            onClick={() => addItem({productId:product.id,quantity:1})}
+            onClick={() => addItem(product.id,1)}
             className="btn btn-primary btn-sm gap-1 shadow"
           >
             <PlusIcon className="size-4" aria-hidden />

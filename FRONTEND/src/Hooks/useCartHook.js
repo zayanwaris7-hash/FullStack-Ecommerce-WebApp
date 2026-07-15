@@ -20,43 +20,42 @@ export const useCartHook = () => {
     });
 
     const product = data?.product?? [];
-    console.log(product);
     const byIdMap = new Map(product.map((p)=>[p.id,p]));
-    console.log(byIdMap);
     const lines= items.map((item)=>({
         item,
         product:byIdMap.get(item.productId)??null,
     }));
-    console.log(lines);
    const subTotal= lines.reduce((sum ,{item,product})=>{
         if(!product) return sum;
         return sum+(product.price * item.quantity);
     },0);
-    console.log(subTotal)
  async function getcheckOutLink() {
     setcheckOutLink(true);
 
-    try {
+      try{
         const data = await apiFetch("/api/checkOut", {
             getToken,
             method: "POST",
             body: {
                 items: items.map((i) => ({
-                    productId: i.productId,
-                    quantity: i.quantity,
+                    productId: i.productId ,
+                    quantity: i.quantity ,
                 })),
             },
         });
-        console.log("data : ",data)
+        console.log("data : ",data);
+        if(!data){
+            console.log("data error")
+        }
 
-        if (data?.checkOutUrl) {
+        if (data?.checkOutUrl){
             window.location.href = data.checkOutUrl;
             return;
         }
-    } finally {
+     } finally {
         setcheckOutLink(false);
+     }
     }
-}
 
     return {
         items,

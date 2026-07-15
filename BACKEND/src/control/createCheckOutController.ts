@@ -26,7 +26,6 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
         }
 
         const parsed = cartSchema.safeParse(req.body);
-        console.log(parsed);
         if (!parsed.success) {
             res.send(404).json({ error: "Invalid Cart", description: parsed.error });
             return;
@@ -38,13 +37,11 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
         }
 
         const localUser = await getLocalUser(userId);
-        console.log(localUser);
         if (!localUser) {
             res.send(404).json({ error: "Not Signed In !" });
             return;
         }
         const ids = parsed.data.items.map(product => product.productId);
-        console.log(ids);
         const productRows = await db.select().from(products).where(and(inArray(products.id, ids), eq(products.active, true)));
         if (productRows.length !== ids.length) {
             res.status(400).json({ error: "One or more product is inavalid " });
@@ -84,7 +81,7 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
                 [env.POLER_CHECKOUT_ID]:[{
                     amount_type:"fixed",
                     price_amount:totalCent,
-                    price_currency:"pkr"
+                    price_currency:"PKR"
                 }]
             },
             success_url:successUrl,

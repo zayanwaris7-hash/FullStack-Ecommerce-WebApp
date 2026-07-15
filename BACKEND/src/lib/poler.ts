@@ -22,7 +22,7 @@ type checkOutBody = {
 export async function polarCreateCheckOut(env:Env,body:checkOutBody){
     const token=env.POLER_ACCESS_TOKEN;
     if(!token) throw new Error("Polar Access Token is not configured!");
-    const ress=await fetch(`${env.POLER_ACCESS_TOKEN}/v1/checkouts`,{
+    const ress=await fetch(`${env.POLER_API_BASE_URL}/v1/checkouts`,{
         method:"POST",
         headers:{
             Authorization : `Bearer ${token}`,
@@ -34,6 +34,6 @@ export async function polarCreateCheckOut(env:Env,body:checkOutBody){
         const txt=await ress.text();
         throw new Error(`Polar Access error : ${txt}`);
     }
-    const data=(await ress.json()) as obj;
-    return data;
+  const data = (await ress.json()) as { id: string; url: string };
+  return { id: data.id, url: data.url };
 }

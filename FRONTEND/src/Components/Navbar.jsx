@@ -33,8 +33,6 @@ const { getToken, isSignedIn } = useAuth();
             to="/"
             className="btn btn-ghost gap-2 px-2 font-mono text-lg font-semibold uppercase tracking-wide md:text-xl"
           >
-            {console.log("he")}
-            {console.log(role,"blah")}
             <span className="flex size-10 items-center justify-center rounded-lg bg-primary/15 p-1 text-primary">
               <StoreIcon className="size-8" aria-hidden />
             </span>
@@ -89,7 +87,6 @@ const { getToken, isSignedIn } = useAuth();
               <UserButton
                 appearance={{ elements: { avatarBox: "h-10 w-10 ring-2 ring-base-300" } }}
               />
-                  {console.log(role)}
               {role === "support" || role === "admin" ? (
                 <span className="badge badge-primary badge-sm hidden capitalize md:inline-flex">
                   {role}

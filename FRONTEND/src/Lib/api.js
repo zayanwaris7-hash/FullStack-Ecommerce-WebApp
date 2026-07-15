@@ -22,7 +22,6 @@ export async function apiFetch(path, opts = {}) {
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
-    console.log("api fetching");
   } catch (e) {
     Sentry.addBreadcrumb({
       category: "api",
