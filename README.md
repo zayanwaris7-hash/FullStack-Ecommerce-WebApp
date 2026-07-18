@@ -229,10 +229,16 @@ npm run db:studio
 
 
 - Home Page
-- Product Page
+![Home](ScreenShots/s1.png)
+![Home](ScreenShots/s2.png)
+- Order Page
+![Order](ScreenShots/s3.png)
 - Cart
-- Checkout
+![Cart](ScreenShots/s4.png)
+- Login 
+![Login](ScreenShots/s5.png)
 - Dashboard
+![Admin](ScreenShots/s6.png)
 
 ---
 
