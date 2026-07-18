@@ -225,9 +225,8 @@ npm run db:studio
 
 ---
 
-# 📸 Screenshots
+# Pages
 
-> Add screenshots here
 
 - Home Page
 - Product Page
