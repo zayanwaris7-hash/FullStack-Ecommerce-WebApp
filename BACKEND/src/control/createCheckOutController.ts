@@ -27,18 +27,18 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
 
         const parsed = cartSchema.safeParse(req.body);
         if (!parsed.success) {
-            res.send(404).json({ error: "Invalid Cart", description: parsed.error });
+            res.status(404).json({ error: "Invalid Cart", description: parsed.error });
             return;
         }
 
         if (!env.POLER_ACCESS_TOKEN) {
-            res.send(503).json({ error: "Checkouts not configured" });
+            res.status(503).json({ error: "Checkouts not configured" });
             return;
         }
 
         const localUser = await getLocalUser(userId);
         if (!localUser) {
-            res.send(404).json({ error: "Not Signed In !" });
+            res.status(404).json({ error: "Not Signed In !" });
             return;
         }
         const ids = parsed.data.items.map(product => product.productId);
@@ -61,15 +61,11 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
                 price: price,
             });
         }
-        if(totalCent<10){
-            res.status(400).json({ error: "Total Price Below Polar Minimum" });
-            return;
-        }
+        
 
         const [session]=await db.insert(checkoutSessions).values({
             userId:localUser.id,
             totalprice:totalCent,
-            currency:"pkr",
             lines,
         }).returning();
 
@@ -80,8 +76,9 @@ export async function createCheckOut(req: Request, res: Response, next: NextFunc
             prices:{
                 [env.POLER_CHECKOUT_ID]:[{
                     amount_type:"fixed",
-                    price_amount:totalCent,
-                    price_currency:"PKR"
+                    price_amount:totalCent*100,
+                    price_currency:"pkr",
+                    product_id: env.POLER_CHECKOUT_ID
                 }]
             },
             success_url:successUrl,

@@ -1,8 +1,5 @@
 import type { Env } from "./env.js";
-type obj={
-    id:string,
-    url:string
-}
+
 type checkOutBody = {
     products: string[];
     prices?: Record<
@@ -11,6 +8,7 @@ type checkOutBody = {
             amount_type: "fixed";
             price_amount: number;
             price_currency: string;
+            product_id?: string;
         }>
     >;
     success_url:string;
